@@ -4,7 +4,6 @@ from django.utils import timezone
 from django.urls import reverse
 
 
-
 class Chat(models.Model):
     DIALOG = 'D'
     CHAT = 'C'
@@ -37,3 +36,9 @@ class Message(models.Model):
 
     def __str__(self):
         return self.message
+
+
+class UserProfile(models.Model):
+    name = models.CharField(max_length=50, blank=True, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='userprof')
+    image = models.ImageField(upload_to='ava', default='nophoto.jpg')
