@@ -1,5 +1,6 @@
 {% extends 'index.html' %}
 {% load custom_tags %}
+{% load static %}
 
 {% block content %}
 <div class="panel">
@@ -12,7 +13,7 @@
                 {% with last_message=chat.message_set.last %}
                     {% get_companion user chat as companion %}
                     <a class="list-group-item {% if companion == last_message.author and not last_message.is_readed %}unreaded{% endif %}" href="{{ chat.get_absolute_url }}">
-                        <img class="avatar-messages" src="{{ companion.userprofile.get_avatar }}">
+                        <img style="width: 100px;" src="{{ companion.userprof.image.url }}">
                         <div class="reply-body">
                             <ul class="list-inline">
                                 <li class="drop-left-padding">
