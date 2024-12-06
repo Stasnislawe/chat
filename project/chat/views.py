@@ -1,13 +1,25 @@
+from django.contrib.auth.models import User
 from django.db.models import Count
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
+from django.views.generic import TemplateView
 
 from .forms import MessageForm
-from .models import Chat
+from .models import Chat, UserProfile
 
 
 # Create your views here.
+
+class Users(TemplateView):
+    model = UserProfile
+    template_name = 'users.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(Users, self).get_context_data(**kwargs)
+        context['users'] = User.objects.all()
+        return context
+
 
 class DialogsView(View):
     def get(self, request):
@@ -49,10 +61,13 @@ class MessagesView(View):
 class CreateDialogView(View):
     def get(self, request, user_id):
         chats = Chat.objects.filter(members__in=[request.user.id, user_id], type=Chat.DIALOG).annotate(c=Count('members')).filter(c=2)
-        if chats.count() == 0:
+        if not chats:
             chat = Chat.objects.create()
-            chat.members.add(request.user)
             chat.members.add(user_id)
+            chat.save()
+            chat.members.add(request.user)
+            chat.save()
+
         else:
             chat = chats.first()
         return redirect(reverse('messages', kwargs={'chat_id': chat.id}))
