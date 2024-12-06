@@ -1,11 +1,11 @@
 from django.contrib.auth.models import User
 from django.db.models import Count
-from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView
-
-from .forms import MessageForm
+from .forms import MessageForm, ProfileForm
 from .models import Chat, UserProfile
 
 
@@ -21,10 +21,31 @@ class Users(TemplateView):
         return context
 
 
-class DialogsView(View):
-    def get(self, request):
-        chats = Chat.objects.filter(members__in=[request.user.id])
-        return render(request, 'users/dialogs.html', {'user_profile': request.user, 'chats': chats})
+class DialogsView(TemplateView):
+    model = UserProfile
+    profile_form = ProfileForm
+    template_name = 'users/dialogs.html'
+    success_url = reverse_lazy('dialogs')
+
+    def get_context_data(self, **kwargs):
+        kwargs['form'] = self.profile_form
+        kwargs['chats'] = Chat.objects.filter(members__in=[self.request.user.id])
+        kwargs['user_profile'] = self.request.user
+        return super().get_context_data(**kwargs)
+
+
+def userprofile(request):
+    form = ProfileForm(request.POST)
+    userprofile = get_object_or_404(UserProfile, user=request.user)
+
+    if form.is_valid():
+        form.save(commit=False)
+        userprofile.name = form.cleaned_data['name']
+        userprofile.image = request.FILES['image']
+        userprofile.save()
+        return HttpResponseRedirect(reverse_lazy('dialogs'))
+
+    return reverse_lazy('dialogs')
 
 
 class MessagesView(View):
