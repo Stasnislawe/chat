@@ -3,6 +3,10 @@
 {% load static %}
 
 {% block content %}
+<div>
+    {{ request.user.userprof.name }}
+    <img style="height: 100px;" src="{{ request.user.userprof.image.url }}">
+</div>
 <h3>{% current_time '%b %d %Y %A' %}</h3>
 <div class="dialogs">
     {% load tz %}
@@ -35,5 +39,35 @@
             {% endwith %}
         {% endif %}
     {% endfor %}
+</div>
+<div>
+</div>
+<div>
+    <!-- Modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Изменить профиль
+    </button>
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="{% url 'create_user' %}" id="add_form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form }}
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">закрыть</button>
+            <button form="add_form" type="submit" class="btn btn-primary">Добавить</button>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>
 {% endblock content %}
