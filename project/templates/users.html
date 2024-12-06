@@ -1,0 +1,9 @@
+{% block content %}
+    <div>
+        {% for user in users %}
+            {% if user != request.user %}
+            <div>{{ user.userprof.name }}</div> <a href="{% url 'create_dialog' user.pk %}">написать</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock content %}
