@@ -216,6 +216,26 @@ a {
                     }
                 }
 
+                .newtext {
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+
+                    .unreaded {
+                        width: 94%;
+                        border-radius: 10px;
+                        padding-left: 5px;
+                        background-color: rgba(66, 66, 66, 0.3);
+                    }
+
+                    .readed {
+                        width: 94%;
+                        border-radius: 10px;
+                        padding-left: 5px;
+                        background-color: none;
+                    }
+                }
+
                 .lower-div {
                     height: 45%;
                     display: flex;
