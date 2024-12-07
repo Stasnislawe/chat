@@ -26,7 +26,7 @@ class Chat(models.Model):
 
 class Message(models.Model):
     chat = models.ForeignKey(Chat, verbose_name="Чат", on_delete=models.CASCADE)
-    author = models.ForeignKey(User, verbose_name="Пользователь", on_delete=models.CASCADE)
+    author = models.ForeignKey(User, verbose_name="Пользователь", related_name='message_author', on_delete=models.CASCADE)
     message = models.TextField(verbose_name="Сообщение")
     pub_date = models.DateTimeField(verbose_name='Дата сообщения', auto_now_add=True)
     is_readed = models.BooleanField(verbose_name='Прочитано', default=False)
