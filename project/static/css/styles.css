@@ -9,15 +9,6 @@ a {
     text-decoration: none;
 }
 
-.my_body {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-
-    main {
-        width: 90%;
-    }
-}
 
 /* nav header */
 .my_nav {
@@ -73,24 +64,138 @@ a {
 }
 /* main */
 
-.dialogs {
+/* users.html */
+.users {
+    margin-top: 20px;
     width: 100%;
+    display: flex;
+    justify-content: center;
+
+    .users-block {
+        width: 40%;
+
+
+        .user {
+            display: flex;
+            margin-bottom: 10px;
+            border: 1px solid black;
+            border-radius: 15px;
+
+            &:last-child {
+                margin-bottom: 0px;
+            }
+
+            .img-div {
+                width: 20%;
+                padding: 5px;
+
+                img {
+                    width: 100%;
+                    border-radius: 50%;
+                }
+            }
+
+            .text-div {
+                width: 100%;
+                padding: 10px 0 0 10px;
+
+                .name {
+                    height: 55%;
+                    font-size: 18px;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}
+
+/* dialogs.html */
+.dialogs {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+
+    .lk {
+        margin-top: 30px;
+        width: 30%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+
+        .btn {
+            width: 80%;
+            border-radius: 18px;
+            border: 1px solid grey;
+            line-height: 19pt;
+
+            &:hover {
+                background-image: linear-gradient(to left, rgba(55, 69, 64, 0.67), rgba(80, 80, 68, 0.4) 80%);
+                font-size: 18px;
+                transition: all 2s ease-out;
+                overflow: hidden;
+            }
+        }
+
+        .info {
+            padding-top: 5px;
+            width: 80%;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+
+            .user {
+                border: 1px solid grey;
+                border-radius: 18px;
+                margin: 5px 0;
+                width: 100%;
+                font-size: 28px;
+                font-weight: bold;
+                text-align: center;
+            }
+
+            img {
+                width: 100%;
+                border-radius: 15px;
+            }
+        }
+    }
+}
+
+.dialogs_list {
+    margin-top: 30px;
+    width: 30%;
+
+    h3 {
+
+        text-align: center;
+    }
 
     .href1 {
         border: 1px solid black;
-        width: 30%;
-        height: 100px;
+        background: rgba(70, 69, 64, 0.67);
+        border-radius: 30px;
+        width: 100%;
+        height: 80px;
+        margin-bottom: 5px;
         padding: 0 7px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
 
         a {
             display: flex;
             align-items: center;
             height: 100%;
+            text-decoration: none;
+
 
             .dialogs_img {
                 height: 90%;
                 border-radius: 50%;
-                border: 3px solid black;
+                border: 2px solid black;
             }
 
             .text-div {
@@ -104,6 +209,11 @@ a {
                     justify-content: space-between;
                     width: 100%;
                     padding: 0 15px;
+
+                    .name {
+                        font-size: 18px;
+                        font-weight: bold;
+                    }
                 }
 
                 .lower-div {
@@ -114,14 +224,36 @@ a {
                     .dialogs_mini_img {
                         height: 100%;
                         border-radius: 50%;
-                        border: 3px solid black;
+                        border: 2px solid black;
                     }
 
-                    .text {
-                        display: flex;
+                    .unreaded {
+                        background-color: rgba(66, 66, 66, 0.3);
+                        margin: 0 5px;
+                        border-radius: 10px;
+                    }
+
+                    .textfield {
                         width: 100%;
-                        padding-left: 10px;
-                        justify-content: flex-start;
+                        display: flex;
+                        align-items: center;
+
+                        .textchecktrue {
+                            color: aquamarine;
+                            font-size: 13px;
+                        }
+
+                        .textcheckfalse {
+                            color: black;
+                            font-size: 13px;
+                        }
+
+                        .text {
+                            display: flex;
+                            width: 100%;
+                            padding-left: 5px;
+                            justify-content: flex-start;
+                        }
                     }
                 }
             }
