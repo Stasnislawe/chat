@@ -1,19 +1,32 @@
 {% extends 'index.html' %}
+{% load static %}
 
 {% block content %}
     <div class="users">
         <div class="users-block">
         {% for user in users %}
             {% if user != request.user %}
-            <div class="user">
-                <div class="img-div">
-                    <img src="{{ user.userprof.image.url }}">
+                {% if user.userprof %}
+                <div class="user">
+                    <div class="img-div">
+                        <img src="{{ user.userprof.image.url }}">
+                    </div>
+                    <div class="text-div">
+                        <div class="name">{{ user.userprof.name }}</div>
+                        <a href="{% url 'create_dialog' user.pk %}">Написать сообщение</a>
+                    </div>
                 </div>
-                <div class="text-div">
-                    <div class="name">{{ user.userprof.name }}</div>
-                    <a href="{% url 'create_dialog' user.pk %}">Написать сообщение</a>
+                {% else %}
+                <div class="user">
+                    <div class="img-div">
+                        <img src="{% static 'images/nophoto.jpg' %}">
+                    </div>
+                    <div class="text-div">
+                        <div class="name">{{ user.username }}</div>
+                        <a href="{% url 'create_dialog' user.pk %}">Написать сообщение</a>
+                    </div>
                 </div>
-            </div>
+                {% endif %}
             {% endif %}
         {% endfor %}
         </div>
