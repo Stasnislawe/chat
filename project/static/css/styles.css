@@ -280,3 +280,14 @@ a {
         }
     }
 }
+
+.message {
+    display: flex;
+    align-items: center;
+}
+
+.avatar-comment {
+    width: 60px;
+    margin-right: 20px;
+    border-radius: 50%;
+}
