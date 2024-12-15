@@ -1,17 +1,19 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.db.models import Count
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, CreateView
 from .forms import MessageForm, ProfileForm
 from .models import Chat, UserProfile
 
 
 # Create your views here.
 
-class Users(TemplateView):
+class Users(LoginRequiredMixin, TemplateView):
     model = UserProfile
     template_name = 'users.html'
 
@@ -21,7 +23,7 @@ class Users(TemplateView):
         return context
 
 
-class DialogsView(TemplateView):
+class DialogsView(LoginRequiredMixin, TemplateView):
     model = UserProfile
     profile_form = ProfileForm
     template_name = 'users/dialogs.html'
@@ -34,21 +36,43 @@ class DialogsView(TemplateView):
         return super().get_context_data(**kwargs)
 
 
+class CreateProfile(CreateView):
+    model = UserProfile
+    form_class = ProfileForm
+    template_name = 'create_profile.html'
+    success_url = reverse_lazy('dialogs')
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()
+        return super().form_valid(form)
+
+
+@login_required()
 def userprofile(request):
     form = ProfileForm(request.POST)
     userprofile = get_object_or_404(UserProfile, user=request.user)
 
     if form.is_valid():
         form.save(commit=False)
-        userprofile.name = form.cleaned_data['name']
-        userprofile.image = request.FILES['image']
+        if form.cleaned_data['name']:
+            userprofile.name = form.cleaned_data['name']
+        if request.FILES:
+            userprofile.image = request.FILES['image']
+
         userprofile.save()
         return HttpResponseRedirect(reverse_lazy('dialogs'))
 
     return reverse_lazy('dialogs')
 
 
-class MessagesView(View):
+def createuser(request):
+    UserProfile.objects.create(user=request.user, name=request.user.username)
+    return reverse_lazy('dialogs')
+
+
+class MessagesView(LoginRequiredMixin, View):
     def get(self, request, chat_id):
         try:
             chat = Chat.objects.get(id=chat_id)
@@ -79,7 +103,7 @@ class MessagesView(View):
         return redirect(reverse('messages', kwargs={'chat_id': chat_id}))
 
 
-class CreateDialogView(View):
+class CreateDialogView(LoginRequiredMixin, View):
     def get(self, request, user_id):
         chats = Chat.objects.filter(members__in=[request.user.id, user_id], type=Chat.DIALOG).annotate(c=Count('members')).filter(c=2)
         if not chats:
