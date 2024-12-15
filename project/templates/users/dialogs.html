@@ -1,10 +1,13 @@
 {% extends 'index.html' %}
 {% load custom_tags %}
 {% load static %}
+{% load crispy_forms_tags %}
+
 
 {% block content %}
 <div class="dialogs">
     <div class="lk">
+        {% if request.user.userprof %}
         <div class="info">
             <img src="{{ request.user.userprof.image.url }}">
             <div class="user">{{ request.user.userprof.name }}</div>
@@ -12,6 +15,17 @@
         <button type="button" class="btn" data-toggle="modal" data-target="#exampleModal">
             Изменить профиль
         </button>
+        {% else %}
+        <div class="info">
+            <img src="{% static 'images/nophoto.jpg' %}">
+            <div class="user">{{ request.user.username }}</div>
+        </div>
+        <button>
+            <a href="{% url 'create_profile' %}">
+                Создать профиль
+            </a>
+        </button>
+        {% endif %}
     </div>
     <div class="dialogs_list">
         <h3>Мои сообщения</h3>
@@ -25,7 +39,7 @@
                 {% get_companion user chat as companion %}
                 <div class="href1">
                     <a href="{{ chat.get_absolute_url }}">
-                        {% if companion %}
+                        {% if companion.userprof %}
                         <img class="dialogs_img" src="{{ companion.userprof.image.url }}">
                         {% else %}
                         <img class="dialogs_img" src="{% static 'images/nophoto.jpg' %}">
@@ -74,7 +88,7 @@
           <div class="modal-body">
             <form action="{% url 'create_user' %}" id="add_form" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form }}
+                {{ form|crispy }}
             </form>
           </div>
           <div class="modal-footer">
