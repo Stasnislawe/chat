@@ -1,0 +1,14 @@
+{% extends "index.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container">
+
+<form action="{% url 'user_create_profile' %}" id="add_form" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="Продолжить">
+</form>
+
+</div>
+{% endblock %}
