@@ -5,9 +5,9 @@
 <div class="container">
     <h2> Регистрация </h2>
     <form method="post">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <input type="submit" value="Продолжить">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button id="regbutton" type="submit" value="Продолжить">Зарегистрироваться</button>
     </form>
     <div style="padding-top: 20px;">
         <div>Уже есть аккаунт?<button style="margin-left: 10px;"><a href="{% url 'login' %}"> Войти </a></button></div>
