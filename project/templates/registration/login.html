@@ -7,10 +7,10 @@
     <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
     {{ form|crispy }}
-    <input type="submit" value="Войти">
+        <button id="logbutton" type="submit" value="Войти">Войти</button>
     </form>
     <div style="padding-top: 20px;">
-    <button> <a href="{% url 'signup' %}"> Регистрация </a></button>
+    <button><a href="{% url 'signup' %}">Регистрация</a></button>
     </div>
 </div>
 {% endblock %}
