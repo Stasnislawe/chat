@@ -1,3 +1,4 @@
+import requests
 from django.test import TestCase
 from django.urls import reverse
 from project.wsgi import *
