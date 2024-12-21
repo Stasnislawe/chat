@@ -20,23 +20,23 @@ class MySeleniumTests(LiveServerTestCase):
         cls.options = webdriver.FirefoxOptions()
         cls.options.add_argument("--headless")
         cls.selenium = webdriver.Firefox(service=cls.service, options=cls.options)
+        cls.username = 'Test1'
+        cls.mail = '1@mail.ru'
+        cls.password = 's4Dsa612H_21Zr'
 
     """Регистрация с последующей авторизацией через селениум"""
     def test_login(self):
         # Задаем юрл
         self.selenium.get(f'{self.live_server_url}/accounts/signup/')
-        username = 'Test1'
-        mail = '1@mail.ru'
-        password = 's4Dsa612H_21Zr'
         # Селениум ищет и заполняет поля регистрации
         username_input = self.selenium.find_element("xpath", "//input[@id='id_username']")
-        username_input.send_keys(username)
+        username_input.send_keys(self.username)
         email_input = self.selenium.find_element("xpath", "//input[@id='id_email']")
-        email_input.send_keys(mail)
+        email_input.send_keys(self.mail)
         password1 = self.selenium.find_element("xpath", "//input[@id='id_password1']")
-        password1.send_keys(password)
+        password1.send_keys(self.password)
         password2 = self.selenium.find_element("xpath", "//input[@id='id_password2']")
-        password2.send_keys(password)
+        password2.send_keys(self.password)
         # Поиск кнопки "регистрация"
         registration_button = self.selenium.find_element("xpath", "//button[@id='regbutton']")
         registration_button.click()
@@ -44,15 +44,15 @@ class MySeleniumTests(LiveServerTestCase):
         time.sleep(1)
         # Авторизация по данным зарегестрированным секунду назад
         login_username = self.selenium.find_element("xpath", "//input[@id='id_username']")
-        login_username.send_keys(username)
+        login_username.send_keys(self.username)
         login_password = self.selenium.find_element("xpath", "//input[@id='id_password']")
-        login_password.send_keys(mail)
+        login_password.send_keys(self.mail)
         login_button = self.selenium.find_element("xpath", "//button[@id='logbutton']")
         login_button.click()
 
         # Проверка что пользователь создан
-        self.object = User.objects.get(username=username)
-        self.assertEqual(str(self.object.username), username)
+        self.object = User.objects.get(username=self.username)
+        self.assertEqual(str(self.object.username), self.username)
 
     @classmethod
     def tearDownClass(cls):
