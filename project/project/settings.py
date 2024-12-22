@@ -138,9 +138,9 @@ DATABASES = {
 }
 
 AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesStandaloneBackend',
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
-    'axes.backends.AxesStandaloneBackend'
 ]
 
 # Password validation
